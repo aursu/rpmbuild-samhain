@@ -1,0 +1,15 @@
+version: "3.4"
+services:
+  samhainbuild:
+    volumes:
+      - rpms:/home/centos/rpmbuild/SRPMS
+      - rpm7:/home/centos/rpmbuild/RPMS
+    build:
+      context: .
+    image: rpmbuild:7-samhainbuild
+
+volumes:
+  rpms:
+    name: rpms
+  rpm7:
+    name: rpm7

@@ -1,0 +1,10 @@
+/var/log/samhain/samhain.log {
+    weekly
+    rotate 10
+    copytruncate
+    delaycompress
+    compress
+    notifempty
+    nocreate
+    missingok
+}
