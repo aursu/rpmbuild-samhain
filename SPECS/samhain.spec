@@ -14,6 +14,8 @@ Source0:		samhain-%{version}.tar.gz
 Source1:		samhain.service
 Source2:        samhain.logrotate
 Source3:        samhainrc
+Source4:        samhain-init.service
+Source5:        samhain.tmpfiles
 
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root
 
@@ -36,7 +38,13 @@ monitoring, detection of rogue SUID executables, and hidden processes.
 %setup -q
 
 %build
-%configure \
+%{_configure} --host=%{_host} --build=%{_build} \
+    --prefix=%{_prefix} \
+    --exec-prefix=%{_exec_prefix} \
+    --sbindir=%{_sbindir} \
+    --sysconfdir=%{_sysconfdir} \
+    --localstatedir=%{_localstatedir} \
+    --mandir=%{_mandir} \
     --enable-login-watch \
     --enable-logfile-monitor \
     --enable-mounts-check \
@@ -60,10 +68,17 @@ rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
 
 install -D -p -m 644 %{SOURCE1} %{buildroot}%{_unitdir}/samhain.service
+install -D -p -m 644 %{SOURCE4} %{buildroot}%{_unitdir}/samhain-init.service
 # install log rotation stuff
 install -D -p -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/logrotate.d/samhain
 # default config
 install -D -p -m 600 %{SOURCE3} %{buildroot}%{_sysconfdir}/samhain/samhainrc
+mkdir -p %{buildroot}%{_localstatedir}/lib/samhain %{buildroot}%{_localstatedir}/log/samhain
+
+# tmpfiles.d configuration (CentOS 7)
+mkdir -p %{buildroot}%{_prefix}/lib/tmpfiles.d
+install -m 644 -p $RPM_SOURCE_DIR/samhain.tmpfiles \
+    %{buildroot}%{_prefix}/lib/tmpfiles.d/samhain.conf
 
 %check
 exit 0
@@ -83,8 +98,8 @@ fi
 %preun
 if [ $1 -eq 0 ]; then
     # Package removal, not upgrade
-    /bin/systemctl --no-reload disable samhain.service &>/dev/null || :
-    /bin/systemctl stop samhain.service &>/dev/null || :
+    /bin/systemctl --no-reload disable samhain-init.service samhain.service &>/dev/null || :
+    /bin/systemctl stop samhain.service samhain-init.service &>/dev/null || :
 fi
 
 %postun
@@ -96,9 +111,16 @@ fi
 
 %files
 %{_sbindir}/samhain
+%{_sbindir}/samhain_setpwd
 %attr(600,root,root) %config(noreplace) %{_sysconfdir}/samhain/samhainrc
 %config(noreplace) %{_sysconfdir}/logrotate.d/samhain
 %{_unitdir}/samhain.service
+%{_unitdir}/samhain-init.service
+%{_prefix}/lib/tmpfiles.d/samhain.conf
+%{_mandir}/man8/samhain.8.gz
+%{_mandir}/man5/samhainrc.5.gz
+%dir %{_localstatedir}/lib/samhain
+%dir %{_localstatedir}/log/samhain
 
 %changelog
 * Wed Nov 28 2018 Alexander Ursu <aursu@hostopia.com> - 4.3.1-1

@@ -3,9 +3,9 @@
 # Configuration file template for samhain.
 #
 #####################################################################
-# 
+#
 # -- empty lines and lines starting with '#', ';' or '//' are ignored
-# -- boolean options can be Yes/No or True/False or 1/0 
+# -- boolean options can be Yes/No or True/False or 1/0
 # -- you can PGP clearsign this file -- samhain will check (if compiled
 #    with support) or otherwise ignore the signature
 # -- CHECK mail address
@@ -17,12 +17,12 @@
 #####################################################################
 #
 # SETUP for file system checking:
-# 
+#
 # (i)   There are several policies, each has its own section. Put files
 #       into the section for the appropriate policy (see below).
-# (ii)  Section [EventSeverity]: 
+# (ii)  Section [EventSeverity]:
 #       To each policy, you can assign a severity (further below).
-# (iii) Section [Log]: 
+# (iii) Section [Log]:
 #       To each log facility, you can assign a threshold severity. Only
 #       reports with at least the threshold severity will be logged
 #       to the respective facility (even further below).
@@ -45,7 +45,7 @@
 # file = /some/directory
 #
 # You can use shell-style globbing patterns, like: file = /path/foo*
-# 
+#
 ######################################################################
 
 [Misc]
@@ -67,6 +67,9 @@
 #
 # --------- / --------------
 #
+# Switch off hardlink check
+#
+UseHardlinkCheck=no
 
 [ReadOnly]
 dir = 0/
@@ -104,7 +107,7 @@ file = /etc/cups/certs/0
 # managed by fstab-sync on Fedora Core
 file = /etc/fstab
 
-# modified when booting 
+# modified when booting
 file = /etc/sysconfig/hwconf
 
 # There are files in /etc that might change, thus changing the directory
@@ -217,7 +220,7 @@ file = /var/lib/xkb
 ##
 ## For these files, changes in signature, timestamps, and increase in size
 ## are ignored. Logfile rotation will cause a report because of shrinking
-## size and different inode. 
+## size and different inode.
 ##
 dir = 99/var/log
 
@@ -270,7 +273,7 @@ IgnoreMissing = /var/lib/slocate/slocate.db.tmp
 [User0]
 [User1]
 ## User0 and User1 are sections for files/dirs with user-definable checking
-## (see the manual) 
+## (see the manual)
 
 
 
@@ -310,10 +313,10 @@ IgnoreMissing = /var/lib/slocate/slocate.db.tmp
 ##
 ##
 ## Use 'none' to SWITCH OFF a log facility
-## 
+##
 ## By default, everything equal to and above the threshold is logged.
-## The specifiers '*', '!', and '=' are interpreted as  
-## 'all', 'all but', and 'only', respectively (like syslogd(8) does, 
+## The specifiers '*', '!', and '=' are interpreted as
+## 'all', 'all but', and 'only', respectively (like syslogd(8) does,
 ## at least on Linux). Examples:
 ## MailSeverity=*
 ## MailSeverity=!warn
@@ -362,7 +365,7 @@ IgnoreMissing = /var/lib/slocate/slocate.db.tmp
 # [SuidCheck]
 ##
 ## --- Check the filesystem for SUID/SGID binaries
-## 
+##
 
 ## Switch on
 #
@@ -375,8 +378,8 @@ IgnoreMissing = /var/lib/slocate/slocate.db.tmp
 ## Alternative: crontab-like schedule
 #
 # SuidCheckSchedule = NULL
- 
-## Directory to exclude 
+
+## Directory to exclude
 #
 # SuidCheckExclude = NULL
 
@@ -404,7 +407,7 @@ IgnoreMissing = /var/lib/slocate/slocate.db.tmp
 # SuidCheckQuarantineMethod = 0
 
 ## For method 1 and 3, really delete instead of truncating
-# 
+#
 # SuidCheckQuarantineDelete = yes
 
 
@@ -418,7 +421,7 @@ IgnoreMissing = /var/lib/slocate/slocate.db.tmp
 # LoginCheckActive = True
 
 ## Severity for logins, multiple logins, logouts
-# 
+#
 # SeverityLogin=info
 # SeverityLoginMulti=warn
 # SeverityLogout=info
@@ -468,7 +471,7 @@ IgnoreMissing = /var/lib/slocate/slocate.db.tmp
 
 ## The absolute path to the command
 ## - Each invocation of this directive will end the definition of the
-##   preceding command, and start the definition of 
+##   preceding command, and start the definition of
 ##   an additional, new command
 #
 # OpenCommand = (no default)
@@ -551,7 +554,7 @@ ChecksumTest=check
 # SetLoopTime = 60
 SetLoopTime = 600
 
-## Interval between file checks 
+## Interval between file checks
 #
 # SetFileCheckTime = 600
 SetFileCheckTime = 7200
@@ -564,8 +567,8 @@ SetFileCheckTime = 7200
 #
 # FileCheckScheduleTwo = NULL
 
-## Report only once on modified files 
-## Setting this to 'FALSE' will generate a report for any policy 
+## Report only once on modified files
+## Setting this to 'FALSE' will generate a report for any policy
 ## violation (old and new ones) each time the daemon checks the file system.
 #
 # ReportOnlyOnce = True
@@ -594,7 +597,7 @@ SetFileCheckTime = 7200
 # MessageQueueActive = False
 
 
-## If false, skip reverse lookup when connecting to a host known 
+## If false, skip reverse lookup when connecting to a host known
 ## by name rather than IP address (i.e. trust the DNS)
 #
 # SetReverseLookup = True
@@ -649,7 +652,7 @@ SetFileCheckTime = 7200
 #
 # SetTimeServer = (default: compiled-in)
 
-## Trusted Users (comma delimited list of user names) 
+## Trusted Users (comma delimited list of user names)
 #
 # TrustedUser = (no default; this adds to the compiled-in list)
 
@@ -671,7 +674,7 @@ SetFileCheckTime = 7200
 # DigestAlgo = TIGER192
 
 
-## Custom format for message header. 
+## Custom format for message header.
 ## CAREFUL if you use XML logfile format.
 ##
 ## %S severity
@@ -731,9 +734,9 @@ SyslogFacility=LOG_LOCAL2
 # You may enclose anything in a @HOSTNAME/@end bracket, as long as the
 #    result still has the proper syntax for the config file.
 # You may have any number of @HOSTNAME/@end brackets.
-# HOSTNAME should be the fully qualified 'official' name 
-#    (e.g. 'nixon.watergate.com', not 'nixon'), no aliases. 
-#    No IP number - except if samhain cannot determine the 
+# HOSTNAME should be the fully qualified 'official' name
+#    (e.g. 'nixon.watergate.com', not 'nixon'), no aliases.
+#    No IP number - except if samhain cannot determine the
 #    fully qualified hostname.
 #
 # @HOSTNAME

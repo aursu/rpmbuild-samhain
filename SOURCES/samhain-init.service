@@ -1,0 +1,11 @@
+
+[Unit]
+Description=Samhain initialization
+After=network.target
+Before=samhain.service
+RequiredBy=samhain.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/samhain init
+ConditionPathExists=!/var/lib/samhain/samhain_file
