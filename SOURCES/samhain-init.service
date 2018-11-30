@@ -3,9 +3,12 @@
 Description=Samhain initialization
 After=network.target
 Before=samhain.service
-RequiredBy=samhain.service
+ConditionPathExists=!/var/lib/samhain/samhain_file
 
 [Service]
 Type=oneshot
-ExecStart=/usr/sbin/samhain init
-ConditionPathExists=!/var/lib/samhain/samhain_file
+ExecStart=/usr/sbin/samhain -t init
+
+[Install]
+RequiredBy=samhain.service
+
