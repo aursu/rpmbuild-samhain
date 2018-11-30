@@ -8,8 +8,16 @@ services:
       context: .
     image: rpmbuild:7-samhainbuild
   samhaintest:
+    networks:
+      - buildnet
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - seccomp:unconfined
+    tmpfs:
+      - /run
     build:
       context: testing
       network: buildnet
