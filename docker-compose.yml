@@ -1,4 +1,4 @@
-version: "3.4"
+version: "3.5"
 services:
   samhainbuild:
     volumes:
@@ -7,9 +7,21 @@ services:
     build:
       context: .
     image: rpmbuild:7-samhainbuild
+  samhaintest:
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    build:
+      context: testing
+      network: buildnet
+    image: rpmbuild:7-samhaintest
 
 volumes:
   rpms:
     name: rpms
   rpm7:
     name: rpm7
+
+networks:
+  buildnet:
+    external: true
+    name: buildnet
