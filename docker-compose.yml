@@ -8,10 +8,9 @@ services:
       context: .
     image: rpmbuild:7-samhainbuild
   samhaintest:
-    networks:
-      - buildnet
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - rpm7:/home/centos/rpmbuild/RPMS
     cap_add:
       - SYS_ADMIN
     security_opt:
@@ -20,7 +19,6 @@ services:
       - /run
     build:
       context: testing
-      network: buildnet
     image: rpmbuild:7-samhaintest
 
 volumes:
@@ -28,8 +26,3 @@ volumes:
     name: rpms
   rpm7:
     name: rpm7
-
-networks:
-  buildnet:
-    external: true
-    name: buildnet
