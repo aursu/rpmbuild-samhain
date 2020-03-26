@@ -6,20 +6,6 @@ services:
       - rpm7:/home/centos/rpmbuild/RPMS
     build:
       context: .
-    image: rpmbuild:7-samhainbuild
-  samhaintest:
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-      - rpm7:/home/centos/rpmbuild/RPMS
-    cap_add:
-      - SYS_ADMIN
-    security_opt:
-      - seccomp:unconfined
-    tmpfs:
-      - /run
-    build:
-      context: testing
-    image: rpmbuild:7-samhaintest
 
 volumes:
   rpms:

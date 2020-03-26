@@ -5,7 +5,7 @@ RUN yum -y install \
         gnutls-devel \
         libacl-devel \
         libattr-devel \
-        libprelude-devel \
+        libprelude-devel >= 5.0.0 \
         pcre-devel \
     && yum clean all && rm -rf /var/cache/yum
 
