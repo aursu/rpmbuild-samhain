@@ -5,7 +5,7 @@
 
 Summary:		The SAMHAIN file integrity/intrusion detection system
 Name:			samhain
-Version:		4.3.1
+Version:		4.4.1
 Release:		1%{?dist}
 License:		GPLv2
 URL:			https://www.la-samhna.de/samhain/
@@ -26,7 +26,7 @@ Requires(postun):	systemd-units
 BuildRequires: gnutls-devel
 BuildRequires: libacl-devel
 BuildRequires: libattr-devel
-BuildRequires: libprelude-devel
+BuildRequires: libprelude-devel >= 5.0.0
 BuildRequires: pcre-devel
 
 %description
@@ -123,5 +123,8 @@ fi
 %dir %{_localstatedir}/log/samhain
 
 %changelog
+* Thu Mar 26 2020 Alexander Ursu <aursu@hostopia.com> - 4.4.1-1
+- upgrade to 4.4.1
+
 * Wed Nov 28 2018 Alexander Ursu <aursu@hostopia.com> - 4.3.1-1
 - initial build
