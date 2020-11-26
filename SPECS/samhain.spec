@@ -5,7 +5,7 @@
 
 Summary:		The SAMHAIN file integrity/intrusion detection system
 Name:			samhain
-Version:		4.4.1
+Version:		4.4.3
 Release:		1%{?dist}
 License:		GPLv2
 URL:			https://www.la-samhna.de/samhain/
@@ -29,10 +29,23 @@ BuildRequires: libattr-devel
 BuildRequires: libprelude-devel >= 5.0.0
 BuildRequires: pcre-devel
 
+# Do not provide private Perl modules
+%global __provides_exclude %{?__provides_exclude:%{__provides_exclude}|}^perl\\(utils\\)
+%global reqfilt sh -c "%{__perl_requires} | sed -e 's!perl(utils)!nagios-plugins-perl!'"
+%global __perl_requires %{reqfilt}
+
 %description
 The Samhain host-based intrusion detection system (HIDS) provides file integrity
 checking and log file monitoring/analysis, as well as rootkit detection, port
 monitoring, detection of rogue SUID executables, and hidden processes.
+
+%package -n nagios-plugins-samhain
+Summary: Nagios Plugin - check_samhain
+Requires: nagios-plugins-perl
+Requires: %{_sbindir}/samhain
+
+%description -n nagios-plugins-samhain
+Provides check_samhain support for Nagios.
 
 %prep
 %setup -q
@@ -63,9 +76,15 @@ monitoring, detection of rogue SUID executables, and hidden processes.
 
 make %{?_smp_mflags}
 
+sed -i 's,/usr/local/nagios/libexec,%{_libdir}/nagios/plugins,' scripts/check_samhain.pl
+
 %install
 rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
+
+# SNMPd script
+mkdir -p %{buildroot}%{_libdir}/nagios/plugins
+install -p -m 744 scripts/check_samhain.pl %{buildroot}%{_libdir}/nagios/plugins/check_samhain
 
 install -D -p -m 644 %{SOURCE1} %{buildroot}%{_unitdir}/samhain.service
 install -D -p -m 644 %{SOURCE4} %{buildroot}%{_unitdir}/samhain-init.service
@@ -122,7 +141,14 @@ fi
 %dir %{_localstatedir}/lib/samhain
 %dir %{_localstatedir}/log/samhain
 
+%files -n nagios-plugins-samhain
+%{_libdir}/nagios/plugins/check_samhain
+
 %changelog
+* Wed Nov 25 2020 Alexander Ursu <alexander.ursu@gmail.com> - 4.4.3-1
+- upgrade to 4.4.3
+- added check_samhain script
+
 * Thu Mar 26 2020 Alexander Ursu <aursu@hostopia.com> - 4.4.1-1
 - upgrade to 4.4.1
 
