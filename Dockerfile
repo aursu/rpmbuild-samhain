@@ -1,13 +1,5 @@
-FROM aursu/rpmbuild:7.8.2003-build
-
-USER root
-RUN yum -y install \
-        gnutls-devel \
-        libacl-devel \
-        libattr-devel \
-        libprelude-devel >= 5.0.0 \
-        pcre-devel \
-    && yum clean all && rm -rf /var/cache/yum
+ARG centos=7.9.2009
+FROM aursu/samhainbuild:${centos}-base
 
 COPY SOURCES ${BUILD_TOPDIR}/SOURCES
 COPY SPECS ${BUILD_TOPDIR}/SPECS

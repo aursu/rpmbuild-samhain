@@ -328,7 +328,7 @@ IgnoreMissing = /var/lib/slocate/slocate.db.tmp
 
 ## Console
 ##
-# PrintSeverity=info
+PrintSeverity=none
 
 ## Logfile
 ##

@@ -1,0 +1,23 @@
+version: "3.5"
+services:
+  centos6samhainbase:
+    build:
+      context: .
+      dockerfile: Dockerfile.6-base
+      args:
+        centos: $OS6
+    image: aursu/samhainbuild:${OS6}-base
+  centos7samhainbase:
+    build:
+      context: .
+      dockerfile: Dockerfile.base
+      args:
+        centos: $OS7
+    image: aursu/samhainbuild:${OS7}-base
+  centos8samhainbase:
+    build:
+      context: .
+      dockerfile: Dockerfile.base
+      args:
+        centos: $OS8
+    image: aursu/samhainbuild:${OS8}-base
